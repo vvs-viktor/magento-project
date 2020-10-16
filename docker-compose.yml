@@ -1,5 +1,5 @@
 # SSL certificates for development
-# $ mkcert viktor-sakhno.local www.viktor-sakhno.local
+# $ mkcert viktor-sakhno.local www.viktor-sakhno.local viktor-sakhno-additional.local www.viktor-sakhno-additional.local
 #
 # Start composition:
 # $ docker-compose up -d
@@ -27,33 +27,33 @@ services:
     labels:
       - traefik.enable=true
       # HTTP
-      - traefik.http.routers.viktor-sakhno-local-http.rule=Host(`viktor-sakhno.local`,`www.viktor-sakhno.local`)
+      - traefik.http.routers.viktor-sakhno-local-http.rule=Host(`viktor-sakhno.local`,`www.viktor-sakhno.local`,`viktor-sakhno-additional.local`,`www.viktor-sakhno-additional.local`)
       - traefik.http.routers.viktor-sakhno-local-http.entrypoints=http
       - traefik.http.routers.viktor-sakhno-local-http.service=viktor-sakhno-local-http
       - traefik.http.services.viktor-sakhno-local-http.loadbalancer.server.port=80
       - traefik.http.services.viktor-sakhno-local-http.loadbalancer.server.scheme=http
       # HTTPS
-      - traefik.http.routers.viktor-sakhno-local-https.rule=Host(`viktor-sakhno.local`,`www.viktor-sakhno.local`)
+      - traefik.http.routers.viktor-sakhno-local-https.rule=Host(`viktor-sakhno.local`,`www.viktor-sakhno.local`,`viktor-sakhno-additional.local`,`www.viktor-sakhno-additional.local`)
       - traefik.http.routers.viktor-sakhno-local-https.entrypoints=https
       - traefik.http.routers.viktor-sakhno-local-https.tls=true
       - traefik.http.routers.viktor-sakhno-local-https.service=viktor-sakhno-local-https
       - traefik.http.services.viktor-sakhno-local-https.loadbalancer.server.port=443
       - traefik.http.services.viktor-sakhno-local-https.loadbalancer.server.scheme=https
       # Develop with extension that allows setting livereload host and port - https://github.com/lokcito/livereload-extensions
-      - traefik.http.routers.viktor-sakhno-local-livereload-https.rule=Host(`viktor-sakhno.local`,`www.viktor-sakhno.local`)
+      - traefik.http.routers.viktor-sakhno-local-livereload-https.rule=Host(`viktor-sakhno.local`,`www.viktor-sakhno.local`,`viktor-sakhno-additional.local`,`www.viktor-sakhno-additional.local`)
       - traefik.http.routers.viktor-sakhno-local-livereload-https.entrypoints=livereload-https
       - traefik.http.routers.viktor-sakhno-local-livereload-https.tls=true
       - traefik.http.routers.viktor-sakhno-local-livereload-https.service=viktor-sakhno-local-livereload-https
       - traefik.http.services.viktor-sakhno-local-livereload-https.loadbalancer.server.port=35729
       - traefik.http.services.viktor-sakhno-local-livereload-https.loadbalancer.server.scheme=http
-      - traefik.http.routers.viktor-sakhno-local-livereload-http.rule=Host(`viktor-sakhno.local`,`www.viktor-sakhno.local`)
+      - traefik.http.routers.viktor-sakhno-local-livereload-http.rule=Host(`viktor-sakhno.local`,`www.viktor-sakhno.local`,`viktor-sakhno-additional.local`,`www.viktor-sakhno-additional.local`)
       - traefik.http.routers.viktor-sakhno-local-livereload-http.entrypoints=livereload-http
       - traefik.http.routers.viktor-sakhno-local-livereload-http.service=viktor-sakhno-local-livereload-http
       - traefik.http.services.viktor-sakhno-local-livereload-http.loadbalancer.server.port=35729
       - traefik.http.services.viktor-sakhno-local-livereload-http.loadbalancer.server.scheme=http
     # Must add extra_hosts to be written to /etc/hosts - otherwise containerized application can not curl itself
     extra_hosts:
-      - "viktor-sakhno.local www.viktor-sakhno.local:127.0.0.1"
+      - "viktor-sakhno.local www.viktor-sakhno.local viktor-sakhno-additional.local www.viktor-sakhno-additional.local:127.0.0.1"
       # Required for xDebug on Linux hosts till docker.host.internal is not available by default - https://github.com/docker/libnetwork/pull/2348/files
       - "host.docker.internal:172.17.0.1"
     links:
